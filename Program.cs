@@ -3,7 +3,7 @@
 var exitCode = await new CliApplicationBuilder()
     .AddCommandsFromThisAssembly()
     // .UseTypeActivator(BuildServiceProvider().GetService)
-    .SetExecutableName("dynamoToLiteDB")
+    .SetExecutableName("DynamoDBToLiteDB")
     .Build()
     .RunAsync(args);
 

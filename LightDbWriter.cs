@@ -3,7 +3,7 @@ using Amazon.DynamoDBv2.Model;
 using LiteDB;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
-namespace DynamoDBBackupToLiteDb;
+namespace DynamoDBToLiteDB;
 
 public static class LightDbWriter
 {

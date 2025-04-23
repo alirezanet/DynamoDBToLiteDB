@@ -1,16 +1,17 @@
 ﻿# DynamoDbToLiteDb
 
-A small CLI tool to turn a DynamoDB backup into a local LiteDB file—and optionally CSV—so you can query or export data without incurring large scan costs.
+A small CLI tool to turn a DynamoDB backup into a local LiteDB file—and optionally CSV—so you can query or export data
+without incurring large scan costs.
 
 ## Why use this
 
-- **Lower cost**: Downloading a backup from S3 avoids DynamoDB scans and high read-capacity consumption.  
-- **Local querying**: Inspect or filter data in LiteDB without hitting AWS.  
+- **Lower cost**: Downloading a backup from S3 avoids DynamoDB scans and high read-capacity consumption.
+- **Local querying**: Inspect or filter data in LiteDB without hitting AWS.
 - **CSV export**: Extract only the fields you need for reports or sharing.
 
 ## Prerequisites
 
-- AWS credentials/configured with S3 “GetObject” access on your machine  
+- AWS credentials/configured with S3 “GetObject” access on your machine
 
 ## Installation
 
@@ -40,13 +41,13 @@ dynamoDbToLiteDb <manifest-summary> [options]
 
 **Options**
 
-| Flag                       | Description                                                  | Default                     |
-|----------------------------|--------------------------------------------------------------|-----------------------------|
-| `-o`, `--output`           | Output `.db` path                                            | `./lite.db`                 |
-| `-b`, `--backup-path`      | Temp folder for downloaded shards                            | OS temp + `/d2l-backup`     |
-| `--clean`                  | Delete temp shards after import                              | `true`                      |
-| `-c`, `--collection-name`  | LiteDB collection name                                       | `default`                   |
-| `-h`, `--help`             | Show help                                                   |                             |
+| Flag                      | Description                       | Default                 |
+|---------------------------|-----------------------------------|-------------------------|
+| `-o`, `--output`          | Output `.db` path                 | `./lite.db`             |
+| `-b`, `--backup-path`     | Temp folder for downloaded shards | OS temp + `/d2l-backup` |
+| `--clean`                 | Delete temp shards after import   | `true`                  |
+| `-c`, `--collection-name` | LiteDB collection name            | `default`               |
+| `-h`, `--help`            | Show help                         |                         |
 
 ### Export CSV from LiteDB
 
@@ -58,14 +59,14 @@ dynamoDbToLiteDb tocsv <fields...> [options]
 
 **Options**
 
-| Flag                       | Description                                                  | Default                     |
-|----------------------------|--------------------------------------------------------------|-----------------------------|
-| `-d`, `--db`               | LiteDB file                                                  | `./lite.db`                 |
-| `-o`, `--output`           | CSV output path                                              | `./output.csv`              |
-| `-b`, `--batch`            | Rows per batch flush                                         | `10000`                     |
-| `-w`, `--where`            | SQL-like WHERE filter                                        | `0=0`                       |
-| `-c`, `--collection-name`  | Collection name                                              | `default`                   |
-| `-h`, `--help`             | Show help                                                   |                             |
+| Flag                      | Description           | Default        |
+|---------------------------|-----------------------|----------------|
+| `-d`, `--db`              | LiteDB file           | `./lite.db`    |
+| `-o`, `--output`          | CSV output path       | `./output.csv` |
+| `-b`, `--batch`           | Rows per batch flush  | `10000`        |
+| `-w`, `--where`           | SQL-like WHERE filter | `0=0`          |
+| `-c`, `--collection-name` | Collection name       | `default`      |
+| `-h`, `--help`            | Show help             |                |
 
 ## Examples
 

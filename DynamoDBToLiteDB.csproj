@@ -5,8 +5,6 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>DynamoDBBackupToLiteDb</RootNamespace>
-        <AssemblyName>dynamoToLiteDB</AssemblyName>
         <PackAsTool>true</PackAsTool>
         <ToolCommandName>dynamoToLiteDB</ToolCommandName>
         <PackageOutputPath>./nupkg</PackageOutputPath>

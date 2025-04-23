@@ -1,15 +1,15 @@
 ﻿using CliFx;
 using CliFx.Attributes;
-using CliFx.Exceptions;
 using CliFx.Infrastructure;
 using LiteDB;
 
-namespace DynamoDBBackupToLiteDb.Cli;
+namespace DynamoDBToLiteDB.Cli;
 
 [Command("ToCsv", Description = "Converts LiteDB data to CSV format.")]
 public class LiteDbToCsvCommand : ICommand
 {
-    [CommandParameter(0, Name = "Whitelist-fields", Description = "Space-seperated whitelisted field names to export to CSV")]
+    [CommandParameter(0, Name = "Whitelist-fields",
+        Description = "Space-seperated whitelisted field names to export to CSV")]
     public List<string> Whitelist { get; set; } = [];
 
     [CommandOption("db", 'd', Description = "Database file path")]

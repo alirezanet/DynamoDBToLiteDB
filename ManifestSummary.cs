@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace DynamoDBBackupToLiteDb;
+namespace DynamoDBToLiteDB;
 
 public class ManifestSummary
 {

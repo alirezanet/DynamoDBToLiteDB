@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 using Amazon.S3;
 using Amazon.S3.Model;
 
-namespace DynamoDBBackupToLiteDb;
+namespace DynamoDBToLiteDB;
 
 public static class S3Helper
 {

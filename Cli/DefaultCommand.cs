@@ -4,7 +4,7 @@ using CliFx.Exceptions;
 using CliFx.Infrastructure;
 using LiteDB;
 
-namespace DynamoDBBackupToLiteDb.Cli;
+namespace DynamoDBToLiteDB.Cli;
 
 [Command(Description = "accepts a manifest-summary.json S3 url or file and exports whitelisted fields to csv")]
 public class DefaultCommand : ICommand
@@ -13,7 +13,7 @@ public class DefaultCommand : ICommand
     public string ManifestSummary { get; set; } = string.Empty;
 
     [CommandOption("output", 'o', Description = "output file path")]
-    public FileInfo Output { get; set; } =  new("./lite.db");
+    public FileInfo Output { get; set; } = new("./lite.db");
 
     [CommandOption("backup-path", 'b', Description = "path to store downloaded backup files")]
     public string BackupPath { get; set; } = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString()[..5]);
