@@ -16,13 +16,14 @@ without incurring large scan costs.
 ## Installation
 
 ```bash
-# (Optional) Publish to NuGet and install as a global tool
-dotnet tool install -g dynamoDbToLiteDb
+# Not deployed yet
+# dotnet tool install -g dynamoDbToLiteDb
 
 # Or build locally
 git clone https://github.com/your-org/dynamoDbToLiteDb.git
 cd dynamoDbToLiteDb
-dotnet build -c Release
+dotnet pack
+dotnet tool install --global --add-source ./nupkg DynamoDBToLiteDB
 ```
 
 ## Usage
