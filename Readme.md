@@ -11,6 +11,8 @@ without incurring large scan costs.
 
 ## Prerequisites
 
+- Backup your DynamoDB table to an S3 bucket
+- Copy the S3 path to `manifest-summary.json` (or download that file locally)
 - AWS credentials/configured with S3 “GetObject” access on your machine
 
 ## Installation
