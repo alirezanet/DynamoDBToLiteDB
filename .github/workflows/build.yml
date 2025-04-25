@@ -1,6 +1,8 @@
 name: Build Pull Requests
 
 on:
+   push:
+      branches: [ master ]
    pull_request:
       branches: [ master ]
 
