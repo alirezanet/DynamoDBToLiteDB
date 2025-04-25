@@ -47,15 +47,19 @@ dynamoDbToLiteDb <manifest-summary> [options]
 
 - `<manifest-summary>` — local path or S3 URL to `manifest-summary.json`
 
-**Options**
 
-| Flag                      | Description                       | Default                 |
-|---------------------------|-----------------------------------|-------------------------|
-| `-o`, `--output`          | Output `.db` path                 | `./lite.db`             |
-| `-b`, `--backup-path`     | Temp folder for downloaded shards | OS temp + `/d2l-backup` |
-| `--clean`                 | Delete temp shards after import   | `true`                  |
-| `-c`, `--collection-name` | LiteDB collection name            | `default`               |
-| `-h`, `--help`            | Show help                         |                         |
+
+| Flag                      | Description                                                | Default                                |
+|----------------------------|------------------------------------------------------------|----------------------------------------|
+| `-o`, `--output`           | Output database file path                                  | `./lite.db`                            |
+| `-b`, `--backup-path`      | Temp folder to store downloaded backup shards              | `C:\Users\AliReza\AppData\Local\Temp\c5077` |
+| `--clean`                  | Delete downloaded backup files after processing           | `true`                                 |
+| `-c`, `--collection-name`  | Collection name inside the LiteDB database                 | `default`                              |
+| `-j`, `--journal`          | Enable LiteDB journaling for data integrity (disable for faster bulk imports) | `true` |
+| `-p`, `--password`         | Password to encrypt the LiteDB database                    |                                        |
+| `-h`, `--help`             | Show help text                                             |                                        |
+| `--version`                | Show version information                                  |                                        |
+
 
 ### Export CSV from LiteDB
 
@@ -67,14 +71,16 @@ dynamoDbToLiteDb tocsv <fields...> [options]
 
 **Options**
 
-| Flag                      | Description           | Default        |
-|---------------------------|-----------------------|----------------|
-| `-d`, `--db`              | LiteDB file           | `./lite.db`    |
-| `-o`, `--output`          | CSV output path       | `./output.csv` |
-| `-b`, `--batch`           | Rows per batch flush  | `10000`        |
-| `-w`, `--where`           | SQL-like WHERE filter | `0=0`          |
-| `-c`, `--collection-name` | Collection name       | `default`      |
-| `-h`, `--help`            | Show help             |                |
+| Flag                      | Description                              | Default         |
+|----------------------------|------------------------------------------|-----------------|
+| `-d`, `--db`               | Database file path                      | `./lite.db`     |
+| `-o`, `--output`           | CSV output file path                    | `./output.csv`  |
+| `-b`, `--batch`            | Processor batch size                    | `10000`         |
+| `-w`, `--where`            | SQL-like WHERE condition(s) for filtering | `0=0`          |
+| `-c`, `--collection-name`  | Collection name inside the database     | `default`       |
+| `-p`, `--password`         | LiteDB database password                |                 |
+| `-h`, `--help`             | Shows help text                         |                 |
+
 
 ## Examples
 
