@@ -18,8 +18,7 @@ without incurring large scan costs.
 ## Installation
 
 ```bash
-# Not deployed yet
-# dotnet tool install -g dynamoDbToLiteDb
+dotnet tool install -g DynamoDbToLiteDb
 
 # Or build locally
 git clone https://github.com/your-org/dynamoDbToLiteDb.git
