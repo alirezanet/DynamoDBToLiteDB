@@ -1,4 +1,5 @@
-﻿using CliFx;
+﻿using System.Text;
+using CliFx;
 using CliFx.Attributes;
 using CliFx.Exceptions;
 using CliFx.Infrastructure;
@@ -24,6 +25,12 @@ public class DefaultCommand : ICommand
     [CommandOption("collection-name", 'c', Description = "Collection name inside the database.")]
     public string CollectionName { get; set; } = "default";
 
+    [CommandOption("Journal", 'j', Description = "Enable LiteDB journaling to ensure data integrity during operations.")]
+    public bool Journal { get; set; } = false;
+
+    [CommandOption("Password", 'p', Description = "Allow you to Set a password for the LiteDB database")]
+    public string? Password { get; set; }
+
     public async ValueTask ExecuteAsync(IConsole console)
     {
         if (Output.Exists)
@@ -35,12 +42,14 @@ public class DefaultCommand : ICommand
         }
 
         var paths = await GetFilePaths();
+        var connectionString = GetConnectionString();
+        using var db = new LiteDatabase(connectionString);
+        {
+            var col = db.GetCollection<BsonDocument>(CollectionName);
 
-        using var db = new LiteDatabase(Output.FullName);
-        var col = db.GetCollection<BsonDocument>(CollectionName);
-
-        foreach (var file in paths)
-            await LightDbWriter.SaveToDb(file, col);
+            foreach (var file in paths)
+                await LightDbWriter.SaveToDb(file, col);
+        }
 
         if (AutoCleanUp)
         {
@@ -50,6 +59,15 @@ public class DefaultCommand : ICommand
 
         await console.Output.WriteLineAsync(
             $"✅ Successfully done.\nCollectionName: {CollectionName}\nOutputFile: {Output}");
+    }
+
+    private string GetConnectionString()
+    {
+        var sb = new StringBuilder();
+        sb.Append($"Filename='{Output.FullName}'; ");
+        sb.Append($"Journal={(Journal ? "true" : "false")}; ");
+        if (Password is not null) sb.Append($"Password='{Password}';");
+        return sb.ToString();
     }
 
     private async Task<string[]> GetFilePaths()

@@ -1,4 +1,5 @@
-﻿using CliFx;
+﻿using System.Text;
+using CliFx;
 using CliFx.Attributes;
 using CliFx.Infrastructure;
 using LiteDB;
@@ -28,8 +29,8 @@ public class LiteDbToCsvCommand : ICommand
     [CommandOption("collection-name", 'c', Description = "Collection name inside the database.")]
     public string CollectionName { get; set; } = "default";
 
-    [CommandOption("Journal", 'j', Description = "Enable LiteDB journaling to ensure data integrity during operations.")]
-    public bool Journal { get; set; } = false;
+    [CommandOption("Password", 'p', Description = "LiteDB database password")]
+    public string? Password { get; set; }
 
 
     public async ValueTask ExecuteAsync(IConsole console)
@@ -37,7 +38,7 @@ public class LiteDbToCsvCommand : ICommand
         await using var fs = File.OpenWrite(Output.FullName);
         await using var writer = new StreamWriter(fs);
         await writer.WriteLineAsync(string.Join(",", Whitelist));
-        var connectionString = $"Filename='{DbPath.FullName}';Journal={(Journal ? "true" : "false")}";
+        var connectionString = GetConnectionString();
         using var db = new LiteDatabase(connectionString);
         var counter = 0;
         var reader = db.Execute($"SELECT $ FROM {CollectionName} WHERE {Where}");
@@ -67,5 +68,13 @@ public class LiteDbToCsvCommand : ICommand
             await console.Output.WriteLineAsync($"✅ Successfully exported. {counter} rows.\n{Output.FullName}");
         else
             await console.Error.WriteLineAsync("⚠️ No data found to export.");
+    }
+
+    private string GetConnectionString()
+    {
+        var sb = new StringBuilder();
+        sb.Append($"Filename='{DbPath.FullName}'; ");
+        if (Password is not null) sb.Append($"Password='{Password}'; ");
+        return sb.ToString();
     }
 }
