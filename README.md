@@ -1,4 +1,10 @@
-﻿# DynamoDbToLiteDb
+﻿
+![GitHub](https://img.shields.io/github/license/alirezanet/dynamodbtolitedb) 
+![Nuget](https://img.shields.io/nuget/dt/dynamodbtolitedb?color=%239100ff)
+![Nuget](https://img.shields.io/nuget/v/dynamodbtolitedb?label=stable) 
+[![NuGet version](https://img.shields.io/nuget/v/dynamodbtolitedb.svg?style=flat-square)](https://www.nuget.org/packages/dynamodbtolitedb/)
+
+# DynamoDbToLiteDb
 
 A small CLI tool to turn a DynamoDB backup into a local LiteDB file—and optionally CSV—so you can query or export data
 without incurring large scan costs.
