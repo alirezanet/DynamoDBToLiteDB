@@ -28,14 +28,17 @@ public class LiteDbToCsvCommand : ICommand
     [CommandOption("collection-name", 'c', Description = "Collection name inside the database.")]
     public string CollectionName { get; set; } = "default";
 
+    [CommandOption("Journal", 'j', Description = "Enable LiteDB journaling to ensure data integrity during operations.")]
+    public bool Journal { get; set; } = false;
+
 
     public async ValueTask ExecuteAsync(IConsole console)
     {
         await using var fs = File.OpenWrite(Output.FullName);
         await using var writer = new StreamWriter(fs);
         await writer.WriteLineAsync(string.Join(",", Whitelist));
-
-        using var db = new LiteDatabase(DbPath.FullName);
+        var connectionString = $"Filename='{DbPath.FullName}';Journal={(Journal ? "true" : "false")}";
+        using var db = new LiteDatabase(connectionString);
         var counter = 0;
         var reader = db.Execute($"SELECT $ FROM {CollectionName} WHERE {Where}");
 
