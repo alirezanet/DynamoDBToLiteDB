@@ -25,8 +25,8 @@ public class DefaultCommand : ICommand
     [CommandOption("collection-name", 'c', Description = "Collection name inside the database.")]
     public string CollectionName { get; set; } = "default";
 
-    [CommandOption("Journal", 'j', Description = "Enable LiteDB journaling to ensure data integrity during operations.")]
-    public bool Journal { get; set; } = false;
+    [CommandOption("Journal", 'j', Description = "Enable LiteDB journaling to ensure data integrity during operations. Disabling may improve performance for bulk imports but increases risk of data loss if interrupted.")]
+    public bool Journal { get; set; } = true;
 
     [CommandOption("Password", 'p', Description = "Allow you to Set a password for the LiteDB database")]
     public string? Password { get; set; }
