@@ -16,14 +16,14 @@ public class LiteDbToCsvCommand : ICommand
     [CommandOption("db", 'd', Description = "Database file path")]
     public FileInfo DbPath { get; set; } = new("./lite.db");
 
-    [CommandOption("output", 'o', Description = "Output file path")]
+    [CommandOption("output", 'o', Description = "CSV output file path")]
     public FileInfo Output { get; set; } = new("./output.csv");
 
-    [CommandOption("batch", 'b', Description = "The processor batch size")]
+    [CommandOption("batch", 'b', Description = "Processor batch size")]
     public int BatchSize { get; set; } = 10_000;
 
     [CommandOption("where", 'w',
-        Description = "SQL-Like Where condition(s) for filtering. e.g Id='ffd1b531644041349327ae03776fa5bc'")]
+        Description = "SQL-Like Where condition(s) for filtering. e.g IsActive=true")]
     public string Where { get; set; } = "0=0";
 
     [CommandOption("collection-name", 'c', Description = "Collection name inside the database.")]

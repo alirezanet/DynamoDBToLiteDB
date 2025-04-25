@@ -7,19 +7,19 @@ using LiteDB;
 
 namespace DynamoDBToLiteDB.Cli;
 
-[Command(Description = "accepts a manifest-summary.json S3 url or file and exports whitelisted fields to csv")]
+[Command(Description = "Accepts a manifest-summary.json S3 URL or file and saves it to a LiteDB database")]
 public class DefaultCommand : ICommand
 {
-    [CommandParameter(0, Name = "manifest-summary", Description = "file path or S3 Url of manifest-summary.json")]
+    [CommandParameter(0, Name = "manifest-summary", Description = "File path or S3 Url of manifest-summary.json")]
     public string ManifestSummary { get; set; } = string.Empty;
 
-    [CommandOption("output", 'o', Description = "output file path")]
+    [CommandOption("output", 'o', Description = "Database file path")]
     public FileInfo Output { get; set; } = new("./lite.db");
 
-    [CommandOption("backup-path", 'b', Description = "path to store downloaded backup files")]
+    [CommandOption("backup-path", 'b', Description = "Path to store downloaded backup files")]
     public string BackupPath { get; set; } = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString()[..5]);
 
-    [CommandOption("clean", Description = "removed downloaded backup files after processing has finished")]
+    [CommandOption("clean", Description = "Removes downloaded backup files after processing")]
     public bool AutoCleanUp { get; set; } = true;
 
     [CommandOption("collection-name", 'c', Description = "Collection name inside the database.")]
@@ -28,7 +28,7 @@ public class DefaultCommand : ICommand
     [CommandOption("Journal", 'j', Description = "Enable LiteDB journaling to ensure data integrity during operations. Disabling may improve performance for bulk imports but increases risk of data loss if interrupted.")]
     public bool Journal { get; set; } = true;
 
-    [CommandOption("Password", 'p', Description = "Allow you to Set a password for the LiteDB database")]
+    [CommandOption("Password", 'p', Description = "Allow you to set a password for the LiteDB database")]
     public string? Password { get; set; }
 
     public async ValueTask ExecuteAsync(IConsole console)
