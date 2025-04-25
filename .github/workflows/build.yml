@@ -1,4 +1,4 @@
-name: Build Pull Requests
+name: Build
 
 on:
    push:
