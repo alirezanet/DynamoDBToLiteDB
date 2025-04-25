@@ -2,12 +2,33 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFrameworks>net9.0;net8.0</TargetFrameworks>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <PackAsTool>true</PackAsTool>
-        <ToolCommandName>dynamoToLiteDB</ToolCommandName>
+        <ToolCommandName>DynamoDBToLiteDB</ToolCommandName>
+        <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+        <PackageId>DynamoDBToLiteDB</PackageId>
+        <Version>0.0.1</Version>
+        <Title>DynamoDBToLiteDB</Title>
+        <Authors>AliReza Sabouri</Authors>
+        <Description>A small CLI tool to turn a DynamoDB backup into a local LiteDB file—and optionally CSV—so you can query or export data
+            without incurring large scan costs.</Description>
+        <Copyright>2025</Copyright>
+        <RepositoryUrl>https://github.com/alirezanet/DynamoDBToLiteDB</RepositoryUrl>
+        <Company>TuxTeam</Company>
         <PackageOutputPath>./nupkg</PackageOutputPath>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageDescription>A small CLI tool to turn a DynamoDB backup into a local LiteDB file—and optionally CSV—so you can query or export data
+            without incurring large scan costs.</PackageDescription>
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <IncludeSymbols>true</IncludeSymbols>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 
     <ItemGroup>
