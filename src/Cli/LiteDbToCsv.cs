@@ -38,6 +38,13 @@ public class LiteDbToCsvCommand : ICommand
         await using var fs = File.OpenWrite(Output.FullName);
         await using var writer = new StreamWriter(fs);
         await writer.WriteLineAsync(string.Join(",", Whitelist));
+
+        if (!DbPath.Exists)
+        {
+            await console.Error.WriteLineAsync("Database not found");
+            return;
+        }
+
         var connectionString = GetConnectionString();
         using var db = new LiteDatabase(connectionString);
         var counter = 0;
@@ -73,8 +80,8 @@ public class LiteDbToCsvCommand : ICommand
     private string GetConnectionString()
     {
         var sb = new StringBuilder();
-        sb.Append($"Filename='{DbPath.FullName}'; ");
-        if (Password is not null) sb.Append($"Password='{Password}'; ");
+        sb.Append($"Filename={DbPath.FullName};");
+        if (Password is not null) sb.Append($"Password='{Password}';");
         return sb.ToString();
     }
 }

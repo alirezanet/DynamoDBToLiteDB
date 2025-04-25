@@ -64,8 +64,8 @@ public class DefaultCommand : ICommand
     private string GetConnectionString()
     {
         var sb = new StringBuilder();
-        sb.Append($"Filename='{Output.FullName}'; ");
-        sb.Append($"Journal={(Journal ? "true" : "false")}; ");
+        sb.Append($"Filename={Output.FullName};");
+        sb.Append($"Journal={(Journal ? "true" : "false")};");
         if (Password is not null) sb.Append($"Password='{Password}';");
         return sb.ToString();
     }
