@@ -10,7 +10,7 @@
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
         <PackageId>DynamoDBToLiteDB</PackageId>
-        <Version>0.0.3</Version>
+        <Version>0.0.4</Version>
         <Title>DynamoDBToLiteDB</Title>
         <Authors>AliReza Sabouri</Authors>
         <Description>A small CLI tool to turn a DynamoDB backup into a local LiteDB file—and optionally CSV—so you can query or export data
