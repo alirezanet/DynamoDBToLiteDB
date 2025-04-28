@@ -10,7 +10,7 @@
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
         <PackageId>DynamoDBToLiteDB</PackageId>
-        <Version>0.0.4</Version>
+        <Version>0.0.5</Version>
         <Title>DynamoDBToLiteDB</Title>
         <UseWindowsConsoleUtf8>true</UseWindowsConsoleUtf8>
         <Authors>AliReza Sabouri</Authors>
