@@ -10,76 +10,88 @@ namespace DynamoDBToLiteDB.Cli;
 [Command(Description = "Accepts a manifest-summary.json S3 URL or file and saves it to a LiteDB database")]
 public class DefaultCommand : ICommand
 {
-    [CommandParameter(0, Name = "manifest-summary", Description = "File path or S3 Url of manifest-summary.json")]
+    [CommandParameter(0, Name = "manifest-summary",
+        Description = "File path or S3 URL of manifest-summary.json")]
     public string ManifestSummary { get; set; } = string.Empty;
 
     [CommandOption("output", 'o', Description = "Database file path")]
     public FileInfo Output { get; set; } = new("./lite.db");
 
-    [CommandOption("backup-path", 'b', Description = "Path to store downloaded backup files")]
-    public string BackupPath { get; set; } = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString()[..5]);
+    [CommandOption("backup-path", 'b',
+        Description = "Path to store downloaded backup files")]
+    public string BackupPath { get; set; }
+        = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString()[..5]);
 
-    [CommandOption("clean", Description = "Removes downloaded backup files after processing")]
+    [CommandOption("clean", Description = "Remove downloaded backups after processing")]
     public bool AutoCleanUp { get; set; } = true;
 
-    [CommandOption("collection-name", 'c', Description = "Collection name inside the database.")]
+    [CommandOption("collection-name", 'c',
+        Description = "Collection name inside the database")]
     public string CollectionName { get; set; } = "default";
 
-    [CommandOption("Journal", 'j', Description = "Enable LiteDB journaling to ensure data integrity during operations. Disabling may improve performance for bulk imports but increases risk of data loss if interrupted.")]
+    [CommandOption("journal", 'j', Description = "Enable LiteDB journaling to ensure data integrity during operations. Disabling may improve performance for bulk imports but increases risk of data loss if interrupted.")]
     public bool Journal { get; set; } = true;
 
-    [CommandOption("Password", 'p', Description = "Allow you to set a password for the LiteDB database")]
+    [CommandOption("password", 'p',
+        Description = "Password for the LiteDB database")]
     public string? Password { get; set; }
 
     public async ValueTask ExecuteAsync(IConsole console)
     {
         if (Output.Exists)
         {
-            await console.Output.WriteLineAsync("The database file already exists. do you want to continue? [y/n]");
-            var key = await console.Input.ReadLineAsync();
-            if (key is "n" or "N" or "no" or "NO")
+            await console.Output.WriteLineAsync(
+                "The database file already exists. Continue? [y/N]");
+            var answer = (await console.Input.ReadLineAsync())?.Trim().ToLower();
+            if (answer is "n" or "no" or "" or null)
                 return;
         }
 
+        // Ensure output folder
+        Output.Directory?.Create();
+
+        // Get manifest files
         var paths = await GetFilePaths();
-        var connectionString = GetConnectionString();
-        using var db = new LiteDatabase(connectionString);
-        {
-            var col = db.GetCollection<BsonDocument>(CollectionName);
 
-            foreach (var file in paths)
-                await LightDbWriter.SaveToDb(file, col);
-        }
+        // Open LiteDB
+        using var db = new LiteDatabase(GetConnectionString());
+        var col = db.GetCollection<BsonDocument>(CollectionName);
 
-        if (AutoCleanUp)
+        foreach (var file in paths)
+            await LightDbWriter.SaveToDb(file, col);
+
+        // Cleanup
+        if (AutoCleanUp && Directory.Exists(BackupPath))
         {
-            await console.Output.WriteLineAsync("removing downloaded files");
+            await console.Output.WriteLineAsync("🔄 Removing downloaded files...");
             Directory.Delete(BackupPath, true);
         }
 
         await console.Output.WriteLineAsync(
-            $"✅ Successfully done.\nCollectionName: {CollectionName}\nOutputFile: {Output}");
+            $"✅ Done!\nCollection: {CollectionName}\nDatabase: {Output.FullName}");
     }
 
     private string GetConnectionString()
     {
-        var sb = new StringBuilder();
-        sb.Append($"Filename={Output.FullName};");
-        sb.Append($"Journal={(Journal ? "true" : "false")};");
-        if (Password is not null) sb.Append($"Password='{Password}';");
+        var sb = new StringBuilder()
+            .Append($"Filename={Output.FullName};")
+            .Append($"Journal={(Journal ? "true" : "false")};");
+        if (!string.IsNullOrWhiteSpace(Password))
+            sb.Append($"Password='{Password}';");
         return sb.ToString();
     }
 
     private async Task<string[]> GetFilePaths()
     {
-        string[] paths;
         if (File.Exists(ManifestSummary))
-            paths = await S3Helper.DownloadBackupFromFileAsync(ManifestSummary, BackupPath);
-        else if (Uri.TryCreate(ManifestSummary, UriKind.Absolute, out var url))
-            paths = await S3Helper.DownloadBackupFromUrlAsync(url, BackupPath);
-        else
-            throw new CommandException("the manifest-summary.json file not found");
+            return await S3Helper.DownloadBackupFromFileAsync(
+                ManifestSummary, BackupPath);
 
-        return paths;
+        if (Uri.TryCreate(ManifestSummary, UriKind.Absolute, out var url))
+            return await S3Helper.DownloadBackupFromUrlAsync(
+                url, BackupPath);
+
+        throw new CommandException(
+            $"Manifest-summary.json not found or invalid: {ManifestSummary}");
     }
 }
