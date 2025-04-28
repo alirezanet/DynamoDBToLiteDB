@@ -1,4 +1,8 @@
-﻿using CliFx;
+﻿using System.Text;
+using CliFx;
+
+Console.OutputEncoding = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false);
+Console.InputEncoding  = Encoding.UTF8;
 
 var exitCode = await new CliApplicationBuilder()
     .AddCommandsFromThisAssembly()
